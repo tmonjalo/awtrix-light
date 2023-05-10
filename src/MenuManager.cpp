@@ -4,9 +4,7 @@
 #include <ServerManager.h>
 #include <DisplayManager.h>
 #include <PeripheryManager.h>
-// #include <update.h>
 #include <icons.h>
-#include <UpdateManager.h>
 
 String menuText;
 int menuSelection;
@@ -50,14 +48,14 @@ const char *menuItems[] PROGMEM = {
 #ifdef awtrix2_upgrade
     "VOLUME",
 #endif
-    "UPDATE"};
+    };
 
 int8_t menuIndex = 0;
 #ifdef awtrix2_upgrade
-uint8_t menuItemCount = 13;
+uint8_t menuItemCount = 12;
 
 #else
-uint8_t menuItemCount = 12;
+uint8_t menuItemCount = 11;
 #endif
 
 const char *timeFormat[] PROGMEM = {
@@ -401,12 +399,6 @@ void MenuManager_::selectButton()
             currentState = VolumeMenu;
             break;
 #endif
-        case 12:
-            if (UpdateManager.checkUpdate(true))
-            {
-                UpdateManager.updateFirmware();
-            }
-            break;
         default:
             break;
         }

@@ -7,7 +7,6 @@
 #include <ArduinoJson.h>
 #include "Dictionary.h"
 #include "PeripheryManager.h"
-#include "UpdateManager.h"
 #include "PowerManager.h"
 
 WiFiClient espClient;
@@ -16,7 +15,7 @@ HAMqtt mqtt(espClient, device, 26);
 // HANumber *ScrollSpeed = nullptr;
 HALight *Matrix, *Indikator1, *Indikator2, *Indikator3 = nullptr;
 HASelect *BriMode, *transEffect = nullptr;
-HAButton *dismiss, *nextApp, *prevApp, *doUpdate = nullptr;
+HAButton *dismiss, *nextApp, *prevApp;
 HASwitch *transition = nullptr;
 #ifndef awtrix2_upgrade
 HASensor *battery = nullptr;
@@ -24,7 +23,7 @@ HASensor *battery = nullptr;
 HASensor *temperature, *humidity, *illuminance, *uptime, *strength, *version, *ram, *curApp, *myOwnID, *ipAddr = nullptr;
 HABinarySensor *btnleft, *btnmid, *btnright = nullptr;
 bool connected;
-char matID[40], ind1ID[40], ind2ID[40], ind3ID[40], briID[40], btnAID[40], btnBID[40], btnCID[40], appID[40], tempID[40], humID[40], luxID[40], verID[40], ramID[40], upID[40], sigID[40], btnLID[40], btnMID[40], btnRID[40], transID[40], doUpdateID[40], batID[40], myID[40], sSpeed[40], effectID[40], ipAddrID[40];
+char matID[40], ind1ID[40], ind2ID[40], ind3ID[40], briID[40], btnAID[40], btnBID[40], btnCID[40], appID[40], tempID[40], humID[40], luxID[40], verID[40], ramID[40], upID[40], sigID[40], btnLID[40], btnMID[40], btnRID[40], transID[40], batID[40], myID[40], sSpeed[40], effectID[40], ipAddrID[40];
 long previousMillis_Stats;
 // The getter for the instantiated singleton instance
 MQTTManager_ &MQTTManager_::getInstance()
@@ -49,13 +48,6 @@ void onButtonCommand(HAButton *sender)
     else if (sender == prevApp)
     {
         DisplayManager.previousApp();
-    }
-    else if (sender == doUpdate)
-    {
-        if (UpdateManager.checkUpdate(true))
-        {
-            UpdateManager.updateFirmware();
-        }
     }
 }
 
@@ -189,16 +181,6 @@ void onMqttMessage(const char *topic, const uint8_t *payload, uint16_t length)
         return;
     }
 
-    if (strTopic.equals(MQTT_PREFIX + "/doupdate"))
-    {
-        if (UpdateManager.checkUpdate(true))
-        {
-            UpdateManager.updateFirmware();
-        }
-        delete[] payloadCopy;
-        return;
-    }
-
     if (strTopic.equals(MQTT_PREFIX + "/apps"))
     {
         DisplayManager.updateAppVector(payloadCopy);
@@ -251,16 +233,6 @@ void onMqttMessage(const char *topic, const uint8_t *payload, uint16_t length)
     if (strTopic.equals(MQTT_PREFIX + "/rtttl"))
     {
         PeripheryManager.playRTTTLString(payloadCopy);
-        delete[] payloadCopy;
-        return;
-    }
-
-    if (strTopic.equals(MQTT_PREFIX + "/doupdate"))
-    {
-        if (UpdateManager.checkUpdate(true))
-        {
-            UpdateManager.updateFirmware();
-        }
         delete[] payloadCopy;
         return;
     }
@@ -377,7 +349,6 @@ void onMqttConnected()
         "/settings",
         "/previousapp",
         "/nextapp",
-        "/doupdate",
         "/nextapp",
         "/apps",
         "/power",
@@ -577,12 +548,6 @@ void MQTTManager_::setup()
         dismiss = new HAButton(btnAID);
         dismiss->setIcon(HAbtnaIcon);
         dismiss->setName(HAbtnaName);
-
-        sprintf(doUpdateID, HAdoUpID, macStr);
-        doUpdate = new HAButton(doUpdateID);
-        doUpdate->setIcon(HAdoUpIcon);
-        doUpdate->setName(HAdoUpName);
-        doUpdate->onCommand(onButtonCommand);
 
         sprintf(transID, HAtransID, macStr);
         transition = new HASwitch(transID);

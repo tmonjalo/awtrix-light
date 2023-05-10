@@ -3,12 +3,10 @@
 #include <WebServer.h>
 #include <esp-fs-webserver.h>
 #include "htmls.h"
-#include <Update.h>
 #include <ESPmDNS.h>
 #include <LittleFS.h>
 #include <WiFi.h>
 #include "DisplayManager.h"
-#include "UpdateManager.h"
 #include "PeripheryManager.h"
 #include "PowerManager.h"
 #include <WiFiUdp.h>
@@ -166,14 +164,6 @@ void addHandler()
                      mws.webserver->send(200,F("text/plain"),F("OK")); 
                     }else{
                          mws.webserver->send(500,F("text/plain"),F("ErrorParsingJson")); 
-                    } });
-    mws.addHandler("/api/doupdate", HTTP_POST, []()
-                   { 
-                    if (UpdateManager.checkUpdate(true)){
-                        mws.webserver->send(200,F("text/plain"),F("OK"));
-                        UpdateManager.updateFirmware();
-                    }else{
-                        mws.webserver->send(404,F("text/plain"),"NoUpdateFound");    
                     } });
     mws.addHandler("/api/r2d2", HTTP_POST, []()
                    { PeripheryManager.r2d2(mws.webserver->arg("plain").c_str()); mws.webserver->send(200,F("text/plain"),F("OK")); });

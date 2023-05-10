@@ -146,11 +146,6 @@ void loadDevSettings()
             STATS_INTERVAL = doc["stats_interval"].as<long>();
         }
 
-        if (doc.containsKey("update_check"))
-        {
-            UPDATE_CHECK = doc["update_check"].as<bool>();
-        }
-
         if (doc.containsKey("temp_dec_places"))
         {
             TEMP_DECIMAL_PLACES = doc["temp_dec_places"].as<int>();
@@ -400,14 +395,12 @@ int TEMP_DECIMAL_PLACES = 0;
 uint8_t DFP_VOLUME;
 #endif
 int MATRIX_LAYOUT = 0;
-bool UPDATE_AVAILABLE = false;
 long RECEIVED_MESSAGES;
 CRGB COLOR_CORRECTION;
 CRGB COLOR_TEMPERATURE;
 uint32_t WDC_ACTIVE;
 uint32_t WDC_INACTIVE;
 bool BLOCK_NAVIGATION = false;
-bool UPDATE_CHECK = false;
 float GAMMA = 0;
 bool SENSOR_READING = true;
 bool SENSORS_STABLE = false;

@@ -36,7 +36,6 @@
 #include "MQTTManager.h"
 #include "ServerManager.h"
 #include "Globals.h"
-#include "UpdateManager.h"
 
 TaskHandle_t taskHandle;
 volatile bool StopTask = false;
@@ -75,7 +74,6 @@ void setup()
   {
     DisplayManager.loadNativeApps();
     DisplayManager.loadCustomApps();
-    UpdateManager.setup();
     DisplayManager.startArtnet();
     StopTask = true;
     float x = 4;

@@ -18,5 +18,3 @@ Hold down the middle button for 2s to exit the current menu and to save your set
 | `TEMP` | Allows selection of temperature system (°C or °F).  |
 | `APPS` | Allows to enable or disable internal apps  |
 | `SOUND` | Allows to enable or disable sound output   |
-| `UPDATE` | Check and download new firmware if available. |
-

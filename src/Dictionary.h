@@ -103,18 +103,9 @@ extern const char HAupID[];
 extern const char HAupName[];
 extern const char HAupClass[];
 
-extern const char HAdoUpID[];
-extern const char HAdoUpName[];
-extern const char HAdoUpIcon[];
-
 extern const char HAtransID[];
 extern const char HAtransName[];
 extern const char HAtransIcon[];
-
-extern const char HAupdateID[];
-extern const char HAupdateName[];
-extern const char HAupdateClass[];
-extern const char HAupdateIcon[];
 
 extern const char HAbtnLID[];
 extern const char HAbtnLName[];
@@ -149,7 +140,6 @@ extern const char TempKey[];
 extern const char HumKey[];
 extern const char UpTimeKey[];
 extern const char SignalStrengthKey[];
-extern const char UpdateKey[];
 extern const char MessagesKey[];
 extern const char VersionKey[];
 extern const char RamKey[];

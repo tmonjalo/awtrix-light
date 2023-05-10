@@ -428,14 +428,6 @@ You can adjust each property in the JSON object according to your preferences. I
 %m-%d-%y     04-16-22  
 ```  
     
-## Update
-
-You can initiate the firmware update either through the update button in HA or using the following:
-
-| MQTT Topic          | HTTP URL                          | Payload/Body | HTTP Header        | HTTP Method |
-|---------------------|-----------------------------------|---------------|--------------------|-------------|
-| `[PREFIX]/doupdate` | `http://[IP]/api/doupdate`        | JSON          | empty payload/body | POST        |
-
 #### Reboot Awtrix
 If you need to restart the Awtrix:
 

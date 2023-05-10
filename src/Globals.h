@@ -102,7 +102,6 @@ extern int TEMP_DECIMAL_PLACES;
 extern uint8_t DFP_VOLUME;
 #endif
 extern int MATRIX_LAYOUT;
-extern bool UPDATE_AVAILABLE;
 extern long RECEIVED_MESSAGES;
 extern uint16_t MIN_BATTERY;
 extern uint16_t MAX_BATTERY;
@@ -114,7 +113,6 @@ extern float GAMMA;
 void loadSettings();
 void saveSettings();
 extern bool BLOCK_NAVIGATION;
-extern bool UPDATE_CHECK;
 extern bool SENSOR_READING;
 extern bool SENSORS_STABLE;
 extern bool ROTATE_SCREEN;
