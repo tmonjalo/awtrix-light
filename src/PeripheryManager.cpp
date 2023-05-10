@@ -374,7 +374,7 @@ void PeripheryManager_::setup()
     }
 
     button_select.onPressed(select_button_pressed);
-    button_select.onPressedFor(1000, select_button_pressed_long);
+    button_select.onPressedFor(800, select_button_pressed_long);
     button_select.onSequence(2, 300, select_button_double);
 
     Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
