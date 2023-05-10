@@ -37,25 +37,6 @@
 #include "ServerManager.h"
 #include "Globals.h"
 
-TaskHandle_t taskHandle;
-volatile bool StopTask = false;
-bool stopBoot;
-
-void BootAnimation(void *parameter)
-{
-  const TickType_t xDelay = 1 / portTICK_PERIOD_MS;
-  while (true)
-  {
-    if (StopTask)
-    {
-      break;
-    }
-    DisplayManager.HSVtext(4, 6, "AWTRIX", true, 0);
-    vTaskDelay(xDelay);
-  }
-  vTaskDelete(NULL);
-}
-
 void setup()
 {
   pinMode(15, OUTPUT);
@@ -66,22 +47,14 @@ void setup()
   PeripheryManager.setup();
   ServerManager.loadSettings();
   DisplayManager.setup();
-  DisplayManager.HSVtext(9, 6, VERSION, true, 0);
+  DisplayManager.HSVtext(5, 6, "ULANZI", true, 0);
   delay(500);
-  xTaskCreatePinnedToCore(BootAnimation, "Task", 10000, NULL, 1, &taskHandle, 0);
   ServerManager.setup();
   if (ServerManager.isConnected)
   {
     DisplayManager.loadNativeApps();
     DisplayManager.loadCustomApps();
     DisplayManager.startArtnet();
-    StopTask = true;
-    float x = 4;
-    while (x >= -85)
-    {
-      DisplayManager.HSVtext(x, 6, ("AWTRIX   " + ServerManager.myIP.toString()).c_str(), true, 0);
-      x -= 0.18;
-    }
     if (MQTT_HOST != "")
     {
       DisplayManager.HSVtext(4, 6, "MQTT...", true, 0);
@@ -92,7 +65,6 @@ void setup()
   else
   {
     AP_MODE = true;
-    StopTask = true;
   }
   delay(200);
   DisplayManager.setBrightness(BRIGHTNESS);
