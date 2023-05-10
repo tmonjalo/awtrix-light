@@ -98,8 +98,7 @@ const int LDRReadings = 1000;
 int TotalLDRReadings[LDRReadings];
 float sampleSum = 0.0;
 float sampleAverage = 0.0;
-float brightnessPercent = 0.0;
-int lastBrightness = 0;
+int brightness;
 
 // The getter for the instantiated singleton instance
 PeripheryManager_ &PeripheryManager_::getInstance()
@@ -504,10 +503,15 @@ void PeripheryManager_::tick()
         CURRENT_LUX = (roundf(photocell.getSmoothedLux() * 1000) / 1000);
         if (AUTO_BRIGHTNESS && !MATRIX_OFF)
         {
-            brightnessPercent = (sampleAverage * LDR_FACTOR) / 1023.0 * 100.0;
-            brightnessPercent = pow(brightnessPercent, LDR_GAMMA) / pow(100.0, LDR_GAMMA - 1);
-            BRIGHTNESS = map(brightnessPercent, 0, 100, MIN_BRIGHTNESS, MAX_BRIGHTNESS);
-            DisplayManager.setBrightness(BRIGHTNESS);
+            if (sampleAverage < 100)
+                brightness = 1;
+            else if (sampleAverage < 700)
+                brightness = map(sampleAverage, 100, 700, 2, 13);
+            else if (sampleAverage < 900)
+                brightness = map(sampleAverage, 700, 900, 13, 60);
+            else
+                brightness = map(sampleAverage, 900, 1024, 60, 255);
+            DisplayManager.setBrightness(brightness);
         }
     }
 }

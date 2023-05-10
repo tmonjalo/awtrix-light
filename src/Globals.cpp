@@ -223,6 +223,7 @@ void loadSettings()
         DEBUG_PRINTLN(F("Loading Usersettings"));
     Settings.begin("awtrix", false);
     BRIGHTNESS = Settings.getUInt("BRI", 120);
+    BRIGHTNESS_PERCENT = map(BRIGHTNESS, 0, 255, 0, 100);
     AUTO_BRIGHTNESS = Settings.getBool("ABRI", false);
     UPPERCASE_LETTERS = Settings.getBool("UPPER", true);
     TEXTCOLOR_888 = Settings.getUInt("TCOL", 0xFFFFFF);

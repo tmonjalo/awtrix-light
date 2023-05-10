@@ -62,6 +62,11 @@ DisplayManager_ &DisplayManager_::getInstance()
 
 DisplayManager_ &DisplayManager = DisplayManager.getInstance();
 
+int DisplayManager_::getBrightness()
+{
+    return brightness;
+}
+
 void DisplayManager_::setBrightness(int bri)
 {
   bool wakeup;
@@ -71,14 +76,10 @@ void DisplayManager_::setBrightness(int bri)
   }
 
   if (MATRIX_OFF && !wakeup)
-  {
-    matrix->setBrightness(0);
-  }
+    brightness = 0;
   else
-  {
-    matrix->setBrightness(bri);
-    actualBri = bri;
-  }
+    brightness = bri;
+  matrix->setBrightness(brightness);
 }
 
 bool DisplayManager_::setAutoTransition(bool active)

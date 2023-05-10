@@ -15,6 +15,8 @@ private:
 
     DisplayManager_() = default;
 
+    int brightness = 0;
+
 public:
     static DisplayManager_ &getInstance();
     bool appIsSwitching;
@@ -37,6 +39,7 @@ public:
     void clearMatrix();
     void selectButton();
     void selectButtonLong();
+    int getBrightness();
     void setBrightness(int);
     bool generateNotification(uint8_t source, const char *json);
     bool generateCustomPage(const String &name, JsonObject doc, bool preventSave);

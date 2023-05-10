@@ -166,7 +166,7 @@ void TimeApp(FastLED_NeoMatrix *matrix, MatrixDisplayUiState *state, int16_t x, 
         int16_t timePosY = TIME_MODE > 0 ? 6 : 0;
     }
 
-    if (!SHOW_WEEKDAY)
+    if (!SHOW_WEEKDAY || DisplayManager.getBrightness() < 5)
         return;
 
     uint8_t LINE_WIDTH = TIME_MODE > 0 ? 2 : 3;

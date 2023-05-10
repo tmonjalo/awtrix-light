@@ -223,8 +223,8 @@ void MenuManager_::rightButton()
     case BrightnessMenu:
         if (!AUTO_BRIGHTNESS)
         {
-            BRIGHTNESS_PERCENT = (BRIGHTNESS_PERCENT % 100) + 1;
-            BRIGHTNESS = convertBRIPercentTo8Bit(BRIGHTNESS_PERCENT);
+            BRIGHTNESS_PERCENT = (BRIGHTNESS_PERCENT == 100) ? 100 : BRIGHTNESS_PERCENT + 1;
+            BRIGHTNESS = map(BRIGHTNESS_PERCENT, 0, 100, 0, 255);
             DisplayManager.setBrightness(BRIGHTNESS);
         }
         break;
@@ -284,8 +284,8 @@ void MenuManager_::leftButton()
     case BrightnessMenu:
         if (!AUTO_BRIGHTNESS)
         {
-            BRIGHTNESS_PERCENT = (BRIGHTNESS_PERCENT == 1) ? 100 : BRIGHTNESS_PERCENT - 1;
-            BRIGHTNESS = convertBRIPercentTo8Bit(BRIGHTNESS_PERCENT);
+            BRIGHTNESS_PERCENT = (BRIGHTNESS_PERCENT == 1) ? 1 : BRIGHTNESS_PERCENT - 1;
+            BRIGHTNESS = map(BRIGHTNESS_PERCENT, 0, 100, 0, 255);
             DisplayManager.setBrightness(BRIGHTNESS);
         }
         break;
@@ -341,20 +341,6 @@ void MenuManager_::selectButton()
     {
     case MainMenu:
         currentState = (MenuState)(menuIndex + 1);
-        switch (currentState)
-        {
-        case BrightnessMenu:
-            // reverse of convertBRIPercentTo8Bit.
-            if (BRIGHTNESS <= 10)
-            {
-                BRIGHTNESS_PERCENT = BRIGHTNESS;
-            }
-            else
-            {
-                BRIGHTNESS_PERCENT = map(BRIGHTNESS, 0, 255, 0, 100);
-            }
-            break;
-        }
         break;
     case BrightnessMenu:
         AUTO_BRIGHTNESS = !AUTO_BRIGHTNESS;
