@@ -166,7 +166,7 @@ void TimeApp(FastLED_NeoMatrix *matrix, MatrixDisplayUiState *state, int16_t x, 
         DisplayManager.matrixPrint(day_str);
     }
 
-    if (!SHOW_WEEKDAY || DisplayManager.getBrightness() < 5)
+    if (!SHOW_WEEKDAY)
         return;
 
     // line of week days
@@ -174,6 +174,19 @@ void TimeApp(FastLED_NeoMatrix *matrix, MatrixDisplayUiState *state, int16_t x, 
     uint8_t LINE_SPACING = 1;
     uint8_t LINE_START = TIME_MODE > 0 ? 10 : 2;
     uint8_t dayOffset = START_ON_MONDAY ? 0 : 1;
+    uint32_t color_current_day = WDC_ACTIVE;
+    uint32_t color_next_day = WDC_INACTIVE;
+    if (ALARM_SOUND > 0)
+    {
+        if (timer_localtime()->tm_hour < ALARM_HOUR ||
+                (timer_localtime()->tm_hour == ALARM_HOUR &&
+                    timer_localtime()->tm_min <= ALARM_MINUTE))
+            // alarm will ring today
+            color_current_day = WDC_ALARM;
+        else
+            // alarm will ring tomorrow
+            color_next_day = WDC_ALARM;
+    }
     for (int i = 0; i <= 6; i++)
     {
         int lineStart = LINE_START + i * (LINE_WIDTH + LINE_SPACING);
@@ -181,9 +194,11 @@ void TimeApp(FastLED_NeoMatrix *matrix, MatrixDisplayUiState *state, int16_t x, 
 
         uint32_t color;
         if (i == (timer_localtime()->tm_wday + 6 + dayOffset) % 7)
-            color = WDC_ACTIVE;   // current day
+            color = color_current_day;
+        else if (i == (timer_localtime()->tm_wday + dayOffset) % 7)
+            color = color_next_day;
         else
-            color = WDC_INACTIVE; // other days
+            color = WDC_INACTIVE;
 
         DisplayManager.drawLine(lineStart + x, wdPosY + y, lineEnd + x, wdPosY + y, color);
     }

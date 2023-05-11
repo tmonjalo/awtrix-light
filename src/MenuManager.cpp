@@ -17,6 +17,7 @@ enum MenuState
     AppTimeMenu,
     TimeFormatMenu,
     DateFormatMenu,
+    AlarmMenu,
     WeekdayMenu,
     TempMenu,
     Appmenu,
@@ -37,6 +38,7 @@ const char *menuItems[] PROGMEM = {
     "APPTIME",
     "TIME",
     "DATE",
+    "ALARM",
     "WEEKDAY",
     "TEMP",
     "APPS",
@@ -51,6 +53,9 @@ uint8_t menuItemCount = MaxMenu - 1;
 bool changingMenu;
 
 const char *soundName;
+char alarmTime[6];
+uint8_t alarmTimeIndex = 0;
+bool alarmTimeSet = false;
 
 const char *timeFormat[] PROGMEM = {
     "%H:%M:%S",
@@ -179,6 +184,23 @@ String MenuManager_::menutext()
         DisplayManager.drawMenuIndicator(dateFormatIndex, dateFormatCount, 0xFBC000);
         strftime(t, sizeof(t), dateFormat[dateFormatIndex], timer_localtime());
         return t;
+    case AlarmMenu: {
+        int x = 6 + alarmTimeIndex * 10;
+        int y;
+        if (change)
+            sprintf(alarmTime, "%02d:%02d", ALARM_HOUR, ALARM_MINUTE);
+        if (alarmTimeSet) { // change value
+            for (y = 0 ; y < 7 ; y ++)
+                DisplayManager.drawLine(x, y, x + 8, y, 0x200000);
+            DisplayManager.drawLine(x, 7, x + 8, 7, 0xAAAAAA);
+            x = 5 + alarmTimeIndex * 20;
+            DisplayManager.drawLine(x, 0, x, 7, 0xAAAAAA);
+        } else { // select value to change
+            for (y = 0 ; y < 7 ; y +=6)
+                DisplayManager.drawLine(x + 1, y, x + 7, y, 0x700000);
+        }
+        return alarmTime;
+    }
     case WeekdayMenu:
         return START_ON_MONDAY ? "MON" : "SUN";
     case TempMenu:
@@ -265,6 +287,16 @@ void MenuManager_::rightButton()
     case DateFormatMenu:
         dateFormatIndex = (dateFormatIndex + 1) % dateFormatCount;
         break;
+    case AlarmMenu:
+        if (alarmTimeSet) {
+            if (alarmTimeIndex == 0)
+                ALARM_HOUR = (ALARM_HOUR + 1) % 24;
+            else
+                ALARM_MINUTE = (ALARM_MINUTE + 1) % 60;
+        } else {
+            alarmTimeIndex = 1; /* select minute */
+        }
+        break;
     case Appmenu:
         appsIndex = (appsIndex + 1) % appsCount;
         break;
@@ -328,6 +360,16 @@ void MenuManager_::leftButton()
     case DateFormatMenu:
         dateFormatIndex = (dateFormatIndex == 0) ? dateFormatCount - 1 : dateFormatIndex - 1;
         break;
+    case AlarmMenu:
+        if (alarmTimeSet) {
+            if (alarmTimeIndex == 0)
+                ALARM_HOUR = (ALARM_HOUR == 0) ? 23 : ALARM_HOUR - 1;
+            else
+                ALARM_MINUTE = (ALARM_MINUTE == 0) ? 59 : ALARM_MINUTE - 1;
+        } else {
+            alarmTimeIndex = 0; /* select hour */
+        }
+        break;
     case Appmenu:
         appsIndex = (appsIndex == 0) ? appsCount - 1 : appsIndex - 1;
         break;
@@ -372,6 +414,9 @@ void MenuManager_::selectButton()
             BRIGHTNESS = convertBRIPercentTo8Bit(BRIGHTNESS_PERCENT);
             DisplayManager.setBrightness(BRIGHTNESS);
         }
+        break;
+    case AlarmMenu:
+        alarmTimeSet = alarmTimeSet ? false : true;
         break;
     case Appmenu:
         switch (appsIndex)
@@ -438,6 +483,10 @@ void MenuManager_::selectButtonLong()
             break;
         case SoundMenu:
             PeripheryManager.stopSound();
+            saveSettings();
+            break;
+        case AlarmMenu:
+            alarmTimeSet = false;
             saveSettings();
             break;
         case Appmenu:

@@ -100,6 +100,8 @@ extern String BOOT_SOUND;
 extern uint8_t ALARM_SOUND;
 #define MELODIES_MAX 11
 extern const char *MELODIES[MELODIES_MAX];
+extern uint8_t ALARM_HOUR;
+extern uint8_t ALARM_MINUTE;
 extern int TEMP_DECIMAL_PLACES;
 #ifndef ULANZI
 extern uint8_t DFP_VOLUME;
@@ -112,6 +114,7 @@ extern CRGB COLOR_CORRECTION;
 extern CRGB COLOR_TEMPERATURE;
 extern uint32_t WDC_ACTIVE;
 extern uint32_t WDC_INACTIVE;
+extern uint32_t WDC_ALARM;
 extern float GAMMA;
 void loadSettings();
 void saveSettings();

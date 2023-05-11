@@ -1974,6 +1974,7 @@ String DisplayManager_::getSettings()
   doc["TEFF"] = TRANS_EFFECT;
   doc["WDCA"] = WDC_ACTIVE;
   doc["WDCI"] = WDC_INACTIVE;
+  doc["WDCAL"] = WDC_ALARM;
   doc["TIME_COL"] = TIME_COLOR;
   doc["DATE_COL"] = DATE_COLOR;
   doc["HUM_COL"] = HUM_COLOR;
@@ -2119,6 +2120,11 @@ void DisplayManager_::setNewSettings(const char *json)
   {
     auto WDCI = doc["WDCI"];
     WDC_INACTIVE = getColorFromJsonVariant(WDCI, 0x666666);
+  }
+  if (doc.containsKey("WDCAL"))
+  {
+    auto WDCAL = doc["WDCAL"];
+    WDC_ALARM = getColorFromJsonVariant(WDCAL, 0xAA0000);
   }
   if (doc.containsKey("TCOL"))
   {

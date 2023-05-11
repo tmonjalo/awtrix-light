@@ -241,6 +241,7 @@ void loadSettings()
 #endif
     WDC_ACTIVE = Settings.getUInt("WDCA", 0xFFFFFF);
     WDC_INACTIVE = Settings.getUInt("WDCI", 0x666666);
+    WDC_ALARM = Settings.getUInt("WDCAL", 0xAA0000);
     AUTO_TRANSITION = Settings.getBool("ATRANS", true);
     SHOW_WEEKDAY = Settings.getBool("WD", true);
     TIME_PER_TRANSITION = Settings.getUInt("TSPEED", 400);
@@ -261,6 +262,8 @@ void loadSettings()
 #endif
     SOUND_ACTIVE = Settings.getBool("SOUND", true);
     ALARM_SOUND = Settings.getUInt("ALSOUND", 0);
+    ALARM_HOUR = Settings.getUInt("ALHOUR", 0);
+    ALARM_MINUTE = Settings.getUInt("ALMIN", 0);
 #ifndef ULANZI
     DFP_VOLUME = Settings.getUInt("VOL", 20);
 #endif
@@ -296,6 +299,7 @@ void saveSettings()
 #endif
     Settings.putUInt("WDCA", WDC_ACTIVE);
     Settings.putUInt("WDCI", WDC_INACTIVE);
+    Settings.putUInt("WDCAL", WDC_ALARM);
     Settings.putUInt("TSPEED", TIME_PER_TRANSITION);
     Settings.putUInt("ATIME", TIME_PER_APP);
     Settings.putString("TFORMAT", TIME_FORMAT);
@@ -312,6 +316,8 @@ void saveSettings()
 #endif
     Settings.putBool("SOUND", SOUND_ACTIVE);
     Settings.putUInt("ALSOUND", ALARM_SOUND);
+    Settings.putUInt("ALHOUR", ALARM_HOUR);
+    Settings.putUInt("ALMIN", ALARM_MINUTE);
 #ifndef ULANZI
     Settings.putUInt("VOL", DFP_VOLUME);
 #endif
@@ -394,6 +400,8 @@ uint32_t TEXTCOLOR_888 = 0xFFFFFF;
 bool SOUND_ACTIVE;
 String BOOT_SOUND = "";
 uint8_t ALARM_SOUND = 0;
+uint8_t ALARM_HOUR = 0;
+uint8_t ALARM_MINUTE = 0;
 int TEMP_DECIMAL_PLACES = 0;
 #ifndef ULANZI
 uint8_t DFP_VOLUME;
@@ -404,6 +412,7 @@ CRGB COLOR_CORRECTION;
 CRGB COLOR_TEMPERATURE;
 uint32_t WDC_ACTIVE;
 uint32_t WDC_INACTIVE;
+uint32_t WDC_ALARM;
 bool BLOCK_NAVIGATION = false;
 float GAMMA = 0;
 bool SENSOR_READING = true;
