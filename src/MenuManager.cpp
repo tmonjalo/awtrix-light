@@ -22,11 +22,12 @@ enum MenuState
     TempMenu,
     Appmenu,
 #ifdef ULANZI
-    SoundMenu
+    SoundMenu,
 #else
     SoundMenu,
-    VolumeMenu
+    VolumeMenu,
 #endif
+    MaxMenu
 };
 
 const char *menuItems[] PROGMEM = {
@@ -47,12 +48,7 @@ const char *menuItems[] PROGMEM = {
     "UPDATE"};
 
 int8_t menuIndex = 0;
-#ifdef awtrix2_upgrade
-uint8_t menuItemCount = 13;
-
-#else
-uint8_t menuItemCount = 12;
-#endif
+uint8_t menuItemCount = MaxMenu - 1;
 
 const char *timeFormat[] PROGMEM = {
     "%H:%M:%S",
