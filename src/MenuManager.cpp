@@ -407,9 +407,6 @@ void MenuManager_::selectButtonLong()
             TEXTCOLOR_888 = textColors[currentColor];
             saveSettings();
             break;
-        case MainMenu:
-            inMenu = false;
-            break;
         case SwitchMenu:
             DisplayManager.setAutoTransition(AUTO_TRANSITION);
             saveSettings();
@@ -445,6 +442,7 @@ void MenuManager_::selectButtonLong()
             break;
         }
         currentState = MainMenu;
+        inMenu = false;
     }
     else
     {
