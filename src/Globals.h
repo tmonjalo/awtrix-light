@@ -97,6 +97,9 @@ extern uint8_t TEMP_SENSOR_TYPE;
 #endif
 extern bool SOUND_ACTIVE;
 extern String BOOT_SOUND;
+extern uint8_t ALARM_SOUND;
+#define MELODIES_MAX 11
+extern const char *MELODIES[MELODIES_MAX];
 extern int TEMP_DECIMAL_PLACES;
 #ifndef ULANZI
 extern uint8_t DFP_VOLUME;

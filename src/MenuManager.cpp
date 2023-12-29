@@ -50,6 +50,8 @@ int8_t menuIndex = 0;
 uint8_t menuItemCount = MaxMenu - 1;
 bool changingMenu;
 
+const char *soundName;
+
 const char *timeFormat[] PROGMEM = {
     "%H:%M:%S",
     "%l:%M:%S",
@@ -153,8 +155,6 @@ String MenuManager_::menutext()
         return "0X" + String(textColors[currentColor], HEX);
     case SwitchMenu:
         return AUTO_TRANSITION ? "ON" : "OFF";
-    case SoundMenu:
-        return SOUND_ACTIVE ? "ON" : "OFF";
     case TspeedMenu:
         return String(TIME_PER_TRANSITION / 1000.0, 1) + "s";
     case AppTimeMenu:
@@ -208,6 +208,17 @@ String MenuManager_::menutext()
             break;
         }
         break;
+    case SoundMenu:
+        DisplayManager.drawMenuIndicator(ALARM_SOUND, MELODIES_MAX, 0xF80000);
+        if (change) {
+            if (ALARM_SOUND == 0) {
+                PeripheryManager.stopSound();
+                soundName = "OFF";
+            } else {
+                soundName = PeripheryManager.playRTTTLString(MELODIES[ALARM_SOUND]);
+            }
+        }
+        return soundName;
 #ifndef ULANZI
     case VolumeMenu:
         return String(DFP_VOLUME);
@@ -261,7 +272,8 @@ void MenuManager_::rightButton()
         START_ON_MONDAY = !START_ON_MONDAY;
         break;
     case SoundMenu:
-        SOUND_ACTIVE = !SOUND_ACTIVE;
+        ALARM_SOUND = (ALARM_SOUND + 1) % MELODIES_MAX;
+        SOUND_ACTIVE = (ALARM_SOUND > 0);
         break;
     case TempMenu:
         IS_CELSIUS = !IS_CELSIUS;
@@ -326,7 +338,8 @@ void MenuManager_::leftButton()
         IS_CELSIUS = !IS_CELSIUS;
         break;
     case SoundMenu:
-        SOUND_ACTIVE = !SOUND_ACTIVE;
+        ALARM_SOUND = (ALARM_SOUND == 0) ? MELODIES_MAX - 1 : ALARM_SOUND - 1;
+        SOUND_ACTIVE = (ALARM_SOUND > 0);
         break;
 #ifdef awtrix2_upgrade
     case VolumeMenu:
@@ -420,8 +433,11 @@ void MenuManager_::selectButtonLong()
             DATE_FORMAT = dateFormat[dateFormatIndex];
             saveSettings();
         case WeekdayMenu:
-        case SoundMenu:
         case TempMenu:
+            saveSettings();
+            break;
+        case SoundMenu:
+            PeripheryManager.stopSound();
             saveSettings();
             break;
         case Appmenu:
