@@ -100,6 +100,13 @@ float sampleSum = 0.0;
 float sampleAverage = 0.0;
 int brightness;
 
+PeripheryManager_::PeripheryManager_()
+{
+    this->buttonL = &button_left;
+    this->buttonR = &button_right;
+    this->buttonS = &button_select;
+}
+
 // The getter for the instantiated singleton instance
 PeripheryManager_ &PeripheryManager_::getInstance()
 {
