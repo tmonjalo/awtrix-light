@@ -36,6 +36,7 @@
 #include "MQTTManager.h"
 #include "ServerManager.h"
 #include "Globals.h"
+#include "timer.h"
 
 void setup()
 {
@@ -75,6 +76,7 @@ void loop()
   ServerManager.tick();
   DisplayManager.tick();
   PeripheryManager.tick();
+  timer_tick();
   if (ServerManager.isConnected)
   {
     MQTTManager.tick();
