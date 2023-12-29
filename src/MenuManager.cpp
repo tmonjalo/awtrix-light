@@ -6,12 +6,6 @@
 #include <PeripheryManager.h>
 #include <icons.h>
 
-String menuText;
-int menuSelection;
-
-int8_t stationIndex = 0;
-bool isPlayingRadio = false;
-
 enum MenuState
 {
     MainMenu,
