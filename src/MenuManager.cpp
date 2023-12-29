@@ -48,6 +48,7 @@ const char *menuItems[] PROGMEM = {
 
 int8_t menuIndex = 0;
 uint8_t menuItemCount = MaxMenu - 1;
+bool changingMenu;
 
 const char *timeFormat[] PROGMEM = {
     "%H:%M:%S",
@@ -133,6 +134,12 @@ String MenuManager_::menutext()
 {
     char t[20];
     char display[20];
+    bool change = false;
+
+    if (changingMenu)
+        change = true;
+    changingMenu = false;
+
     switch (currentState)
     {
     case MainMenu:
@@ -215,6 +222,7 @@ void MenuManager_::rightButton()
 {
     if (!inMenu)
         return;
+    changingMenu = true;
     switch (currentState)
     {
     case MainMenu:
@@ -276,6 +284,7 @@ void MenuManager_::leftButton()
     {
         return;
     }
+    changingMenu = true;
     switch (currentState)
     {
     case MainMenu:
@@ -337,6 +346,7 @@ void MenuManager_::selectButton()
     {
         return;
     }
+    changingMenu = true;
     switch (currentState)
     {
     case MainMenu:
@@ -433,5 +443,6 @@ void MenuManager_::selectButtonLong()
     else
     {
         inMenu = true;
+        changingMenu = true;
     }
 }
