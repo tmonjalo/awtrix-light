@@ -21,10 +21,8 @@ enum MenuState
     WeekdayMenu,
     TempMenu,
     Appmenu,
-#ifdef ULANZI
     SoundMenu,
-#else
-    SoundMenu,
+#ifdef awtrix2_upgrade
     VolumeMenu,
 #endif
     MaxMenu
