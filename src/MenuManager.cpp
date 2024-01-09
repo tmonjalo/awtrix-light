@@ -10,6 +10,8 @@
 enum MenuState
 {
     MainMenu,
+    AlarmMenu,
+    SoundMenu,
     BrightnessMenu,
     ColorMenu,
 #if 0
@@ -19,13 +21,11 @@ enum MenuState
 #endif
     TimeFormatMenu,
     DateFormatMenu,
-    AlarmMenu,
 #if 0
     WeekdayMenu,
     TempMenu,
 #endif
     Appmenu,
-    SoundMenu,
 #ifdef awtrix2_upgrade
     VolumeMenu,
 #endif
@@ -33,22 +33,22 @@ enum MenuState
 };
 
 const char *menuItems[] PROGMEM = {
-    "BRIGHT",
-    "COLOR",
+    "REVEIL",
+    "SONNERIE",
+    "LUMIERE",
+    "COULEUR",
 #if 0
     "SWITCH",
     "T-SPEED",
     "APPTIME",
 #endif
-    "TIME",
+    "HEURE",
     "DATE",
-    "ALARM",
 #if 0
     "WEEKDAY",
     "TEMP",
 #endif
     "APPS",
-    "SOUND",
 #ifdef awtrix2_upgrade
     "VOLUME",
 #endif
