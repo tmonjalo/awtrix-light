@@ -12,14 +12,18 @@ enum MenuState
     MainMenu,
     BrightnessMenu,
     ColorMenu,
+#if 0
     SwitchMenu,
     TspeedMenu,
     AppTimeMenu,
+#endif
     TimeFormatMenu,
     DateFormatMenu,
     AlarmMenu,
+#if 0
     WeekdayMenu,
     TempMenu,
+#endif
     Appmenu,
     SoundMenu,
 #ifdef awtrix2_upgrade
@@ -31,14 +35,18 @@ enum MenuState
 const char *menuItems[] PROGMEM = {
     "BRIGHT",
     "COLOR",
+#if 0
     "SWITCH",
     "T-SPEED",
     "APPTIME",
+#endif
     "TIME",
     "DATE",
     "ALARM",
+#if 0
     "WEEKDAY",
     "TEMP",
+#endif
     "APPS",
     "SOUND",
 #ifdef awtrix2_upgrade
@@ -156,12 +164,14 @@ String MenuManager_::menutext()
         DisplayManager.drawMenuIndicator(currentColor, sizeof(textColors) / sizeof(textColors[0]), 0xFBC000);
         DisplayManager.setTextColor(textColors[currentColor]);
         return "0X" + String(textColors[currentColor], HEX);
+#if 0
     case SwitchMenu:
         return AUTO_TRANSITION ? "ON" : "OFF";
     case TspeedMenu:
         return String(TIME_PER_TRANSITION / 1000.0, 1) + "s";
     case AppTimeMenu:
         return String(TIME_PER_APP / 1000.0, 0) + "s";
+#endif
     case TimeFormatMenu:
         DisplayManager.drawMenuIndicator(timeFormatIndex, timeFormatCount, 0xFBC000);
 
@@ -199,10 +209,12 @@ String MenuManager_::menutext()
         }
         return alarmTime;
     }
+#if 0
     case WeekdayMenu:
         return START_ON_MONDAY ? "MON" : "SUN";
     case TempMenu:
         return IS_CELSIUS ? "°C" : "°F";
+#endif
     case Appmenu:
         DisplayManager.drawMenuIndicator(appsIndex, appsCount, 0xFBC000);
         switch (appsIndex)
@@ -270,6 +282,7 @@ void MenuManager_::rightButton()
     case ColorMenu:
         currentColor = (currentColor + 1) % (sizeof(textColors) / sizeof(textColors[0]));
         break;
+#if 0
     case SwitchMenu:
         AUTO_TRANSITION = !AUTO_TRANSITION;
         break;
@@ -279,6 +292,7 @@ void MenuManager_::rightButton()
     case AppTimeMenu:
         TIME_PER_APP = min(static_cast<long>(30000), TIME_PER_APP + 1000);
         break;
+#endif
     case TimeFormatMenu:
         timeFormatIndex = (timeFormatIndex + 1) % timeFormatCount;
         break;
@@ -298,16 +312,20 @@ void MenuManager_::rightButton()
     case Appmenu:
         appsIndex = (appsIndex + 1) % appsCount;
         break;
+#if 0
     case WeekdayMenu:
         START_ON_MONDAY = !START_ON_MONDAY;
         break;
+#endif
     case SoundMenu:
         ALARM_SOUND = (ALARM_SOUND + 1) % MELODIES_MAX;
         SOUND_ACTIVE = (ALARM_SOUND > 0);
         break;
+#if 0
     case TempMenu:
         IS_CELSIUS = !IS_CELSIUS;
         break;
+#endif
 #ifdef awtrix2_upgrade
     case VolumeMenu:
         if ((DFP_VOLUME + 1) > 30)
@@ -343,6 +361,7 @@ void MenuManager_::leftButton()
     case ColorMenu:
         currentColor = (currentColor + sizeof(textColors) / sizeof(textColors[0]) - 1) % (sizeof(textColors) / sizeof(textColors[0]));
         break;
+#if 0
     case SwitchMenu:
         AUTO_TRANSITION = !AUTO_TRANSITION;
         break;
@@ -352,6 +371,7 @@ void MenuManager_::leftButton()
     case AppTimeMenu:
         TIME_PER_APP = max(static_cast<long>(1000), TIME_PER_APP - 1000);
         break;
+#endif
     case TimeFormatMenu:
         timeFormatIndex = (timeFormatIndex == 0) ? timeFormatCount - 1 : timeFormatIndex - 1;
         break;
@@ -371,12 +391,14 @@ void MenuManager_::leftButton()
     case Appmenu:
         appsIndex = (appsIndex == 0) ? appsCount - 1 : appsIndex - 1;
         break;
+#if 0
     case WeekdayMenu:
         START_ON_MONDAY = !START_ON_MONDAY;
         break;
     case TempMenu:
         IS_CELSIUS = !IS_CELSIUS;
         break;
+#endif
     case SoundMenu:
         ALARM_SOUND = (ALARM_SOUND == 0) ? MELODIES_MAX - 1 : ALARM_SOUND - 1;
         SOUND_ACTIVE = (ALARM_SOUND > 0);
@@ -459,6 +481,7 @@ void MenuManager_::selectButtonLong()
             TEXTCOLOR_888 = textColors[currentColor];
             saveSettings();
             break;
+#if 0
         case SwitchMenu:
             DisplayManager.setAutoTransition(AUTO_TRANSITION);
             saveSettings();
@@ -468,6 +491,7 @@ void MenuManager_::selectButtonLong()
             DisplayManager.applyAllSettings();
             saveSettings();
             break;
+#endif
         case TimeFormatMenu:
             TIME_FORMAT = timeFormat[timeFormatIndex];
             saveSettings();
@@ -475,10 +499,12 @@ void MenuManager_::selectButtonLong()
         case DateFormatMenu:
             DATE_FORMAT = dateFormat[dateFormatIndex];
             saveSettings();
+#if 0
         case WeekdayMenu:
         case TempMenu:
             saveSettings();
             break;
+#endif
         case SoundMenu:
             PeripheryManager.stopSound();
             saveSettings();
